@@ -1,4 +1,4 @@
-package com.gorokhov.notes.ui.theme
+package com.gorokhov.notes.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

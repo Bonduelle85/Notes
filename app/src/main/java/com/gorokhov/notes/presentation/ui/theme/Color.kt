@@ -1,4 +1,4 @@
-package com.gorokhov.notes.ui.theme
+package com.gorokhov.notes.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
