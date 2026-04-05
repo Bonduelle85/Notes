@@ -28,23 +28,22 @@ fun NotesScreen(
             LazyRow(
                 modifier = modifier
             ) {
-                items(
-                    items = state.pinnedNotes,
-                    key = { note -> note.id }
-                ) { note ->
-                    NoteCard(
-                        note = note,
-                        onClick = {
-                            viewModel.processCommand(
-                                NotesCommand.SwitchPinStatus(note.id)
-                            )
-                        }
-                    )
+                state.pinnedNotes.forEach { note ->
+                    item(key = note.id) {
+                        NoteCard(
+                            note = note,
+                            onClick = {
+                                viewModel.processCommand(
+                                    NotesCommand.SwitchPinStatus(note.id)
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }
 
-        items(
+        items( // extension fun
             items = state.otherNotes,
             key = { note -> note.id }
         ) { note ->
