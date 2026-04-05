@@ -12,9 +12,19 @@ object TestNotesRepositoryImpl : NotesRepository {
 
     private val notesListFlow = MutableStateFlow<List<Note>>(emptyList())
 
-    override fun addNote(note: Note) {
-        notesListFlow.update { list ->
-            list + note
+    override fun addNote(
+        title: String,
+        content: String,
+    ) {
+        notesListFlow.update { oldList ->
+            val note = Note(
+                id = oldList.size,
+                title = title,
+                content = content,
+                updatedAt = System.currentTimeMillis(),
+                isPinned = false
+            )
+            oldList + note
         }
     }
 
