@@ -12,32 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = BrownDark,           // более мягкий, но узнаваемый коричневый
+    onPrimary = White,
+    background = Grey900,          // глубокий тёмный фон
+    onBackground = Grey300,        // светло-серый для читаемости
+    surface = Grey800,             // чуть светлее фона
+    onSurface = Grey200,
+    onSurfaceVariant = Grey600,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Brown,
+    onPrimary = White,
+    background = White,
+    onBackground = Grey300,
+    surface = Grey100,
+    onSurface = Grey300,
+    onSurfaceVariant = Grey200,
 )
 
 @Composable
 fun NotesTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
