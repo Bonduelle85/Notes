@@ -19,16 +19,13 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class NotesViewModel : ViewModel() {
 
     private val repository = TestNotesRepositoryImpl
 
-    private val addNoteUseCase = AddNoteUseCase(repository)
-    private val deleteNoteUseCase = DeleteNoteUseCase(repository)
-    private val editNoteUseCase = EditNoteUseCase(repository)
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
-    private val getNoteUseCase = GetNoteUseCase(repository)
     private val searchNotesUseCase = SearchNotesUseCase(repository)
     private val switchPinnedStatusUseCase = SwitchPinnedStatusUseCase(repository)
 
@@ -38,8 +35,6 @@ class NotesViewModel : ViewModel() {
     private val query = MutableStateFlow("")
 
     init {
-        addSomeNotes()
-
         query
             .onEach { input ->
                 _state.update {
@@ -67,34 +62,16 @@ class NotesViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    // Temp method
-    private fun addSomeNotes() {
-        repeat(50) {
-            addNoteUseCase(
-                title = "Title$it",
-                content = "Content$it"
-            )
-        }
-    }
-
     fun processCommand(command: NotesCommand) {
-        when (command) {
-            is NotesCommand.SwitchPinStatus -> {
-                switchPinnedStatusUseCase(command.noteId)
-            }
+        viewModelScope.launch {
+            when (command) {
+                is NotesCommand.SwitchPinStatus -> {
+                    switchPinnedStatusUseCase(command.noteId)
+                }
 
-            is NotesCommand.DeleteNote -> {
-                deleteNoteUseCase(command.noteId)
-            }
-
-            is NotesCommand.EditNote -> {
-                val note = getNoteUseCase(command.note.id)
-                val title = note.title
-                editNoteUseCase(note.copy(title = "$title Edited"))
-            }
-
-            is NotesCommand.InputSearchQuery -> {
-                query.update { command.query.trim() }
+                is NotesCommand.InputSearchQuery -> {
+                    query.update { command.query.trim() }
+                }
             }
         }
     }
@@ -105,11 +82,6 @@ sealed interface NotesCommand {
     data class InputSearchQuery(val query: String) : NotesCommand
 
     data class SwitchPinStatus(val noteId: Int) : NotesCommand
-
-    // Test Commands
-    data class DeleteNote(val noteId: Int) : NotesCommand
-
-    data class EditNote(val note: Note) : NotesCommand
 }
 
 data class NotesScreenState(

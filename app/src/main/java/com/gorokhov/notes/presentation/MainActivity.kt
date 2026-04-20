@@ -21,7 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NotesTheme {
                 NotesScreen(
-                    modifier = Modifier.padding(top = 34.dp)
+                    onNoteClick = {},
+                    onAddNoteClick = {}
                 )
             }
         }
