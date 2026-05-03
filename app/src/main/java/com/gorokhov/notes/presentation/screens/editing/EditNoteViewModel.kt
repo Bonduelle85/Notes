@@ -67,7 +67,7 @@ class EditNoteViewModel(private val noteId: Int) : ViewModel() {
                 _state.update { previousState ->
                     if (previousState is EditNoteState.Editing) {
                         val newNote = previousState.note.copy(
-                            content = command.title
+                            title = command.title
                         )
                         previousState.copy(note = newNote)
                     } else previousState

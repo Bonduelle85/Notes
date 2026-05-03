@@ -22,17 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotesTheme {
-//                NotesScreen(
-//                    onNoteClick = {},
-//                    onAddNoteClick = {}
-//                )
-//                CreateNotesScreen(
-//                    onFinished = {}
-//                )
-                EditNotesScreen(
-                    noteId = 5,
-                    onFinished = {}
-                )
+                NavGraph()
             }
         }
     }
