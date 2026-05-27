@@ -1,19 +1,13 @@
 package com.gorokhov.notes.presentation.screens.creation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import android.content.Context
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,22 +23,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gorokhov.notes.domain.Note
+import com.gorokhov.notes.presentation.screens.editing.EditNoteViewModel
 import com.gorokhov.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNotesScreen(
     modifier: Modifier = Modifier,
-    viewModel: CreateNoteViewModel = viewModel(),
+    context: Context = LocalContext.current.applicationContext,
+    viewModel: CreateNoteViewModel = viewModel {
+        CreateNoteViewModel(context = context)
+    },
     onFinished: () -> Unit
 ) {
 
@@ -111,7 +107,7 @@ fun CreateNotesScreen(
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                                )
+                            )
                         }
                     )
 
@@ -172,6 +168,7 @@ fun CreateNotesScreen(
                 }
             }
         }
+
         CreateNoteState.Finished -> {
             LaunchedEffect(key1 = Unit) {
                 onFinished()

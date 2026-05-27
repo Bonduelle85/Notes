@@ -2,14 +2,12 @@
 
 package com.gorokhov.notes.presentation.screens.notes
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gorokhov.notes.data.TestNotesRepositoryImpl
-import com.gorokhov.notes.domain.AddNoteUseCase
-import com.gorokhov.notes.domain.DeleteNoteUseCase
-import com.gorokhov.notes.domain.EditNoteUseCase
+import com.gorokhov.notes.data.AppDatabase
+import com.gorokhov.notes.data.RoomNotesRepositoryImpl
 import com.gorokhov.notes.domain.GetAllNotesUseCase
-import com.gorokhov.notes.domain.GetNoteUseCase
 import com.gorokhov.notes.domain.Note
 import com.gorokhov.notes.domain.SearchNotesUseCase
 import com.gorokhov.notes.domain.SwitchPinnedStatusUseCase
@@ -21,10 +19,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NotesViewModel : ViewModel() {
+class NotesViewModel(context: Context) : ViewModel() {
 
-    private val repository = TestNotesRepositoryImpl
-
+    // private val repository = TestNotesRepositoryImpl
+    private val repository = RoomNotesRepositoryImpl.getInstance(context)
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
     private val searchNotesUseCase = SearchNotesUseCase(repository)
     private val switchPinnedStatusUseCase = SwitchPinnedStatusUseCase(repository)
