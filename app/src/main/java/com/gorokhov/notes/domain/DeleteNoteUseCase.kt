@@ -1,7 +1,9 @@
 package com.gorokhov.notes.domain
 
+import javax.inject.Inject
 
-class DeleteNoteUseCase(
+
+class DeleteNoteUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
     suspend operator fun invoke(noteId: Int) {

@@ -1,8 +1,9 @@
 package com.gorokhov.notes.domain
 
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetAllNotesUseCase(
+class GetAllNotesUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
     operator fun invoke(): Flow<List<Note>> {

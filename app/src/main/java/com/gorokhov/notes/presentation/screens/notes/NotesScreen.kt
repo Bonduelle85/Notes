@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gorokhov.notes.domain.Note
 import com.gorokhov.notes.presentation.ui.theme.OtherNotesColorsDark
@@ -52,10 +53,7 @@ import com.gorokhov.notes.presentation.utils.DateFormatter
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current.applicationContext,
-    viewModel: NotesViewModel = viewModel {
-        NotesViewModel(context = context)
-    },
+    viewModel: NotesViewModel = hiltViewModel(),
     onNoteClick: (Note) -> Unit,
     onAddNoteClick: () -> Unit,
 ) {

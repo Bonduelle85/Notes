@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+
 @Database(
     entities = [NoteDbModel::class],
     version = 1,
@@ -17,13 +18,14 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
+        private val LOCK = Any()
 
         fun getInstance(context: Context): AppDatabase {
             // Первая проверка (без блокировки)
             INSTANCE?.let { return it }
 
             // Синхронизация только при необходимости
-            synchronized(this) {
+            synchronized(LOCK) {
                 // Вторая проверка (double-check)
                 INSTANCE?.let { return it }
 

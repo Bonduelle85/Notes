@@ -1,29 +1,28 @@
 package com.gorokhov.notes.presentation.screens.editing
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gorokhov.notes.data.RoomNotesRepositoryImpl
-import com.gorokhov.notes.data.TestNotesRepositoryImpl
 import com.gorokhov.notes.domain.DeleteNoteUseCase
 import com.gorokhov.notes.domain.EditNoteUseCase
 import com.gorokhov.notes.domain.GetNoteUseCase
 import com.gorokhov.notes.domain.Note
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EditNoteViewModel(
-    private val noteId: Int,
-    context: Context
+@HiltViewModel(assistedFactory = EditNoteViewModel.Factory::class)
+class EditNoteViewModel @AssistedInject constructor(
+    getNoteUseCase: GetNoteUseCase,
+    private val editNoteUseCase: EditNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    @Assisted("noteId") noteId: Int
 ) : ViewModel() {
-
-    // private val repository = TestNotesRepositoryImpl
-    private val repository = RoomNotesRepositoryImpl.getInstance(context)
-    private val editNoteUseCase = EditNoteUseCase(repository)
-    private val getNoteUseCase = GetNoteUseCase(repository)
-    private val deleteNoteUseCase = DeleteNoteUseCase(repository)
 
     private val _state = MutableStateFlow<EditNoteState>(EditNoteState.Initial)
     val state = _state.asStateFlow()
@@ -94,6 +93,14 @@ class EditNoteViewModel(
                 }
             }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(
+            @Assisted("noteId") noteId: Int
+        ): EditNoteViewModel
     }
 }
 

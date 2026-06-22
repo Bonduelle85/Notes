@@ -1,17 +1,14 @@
 package com.gorokhov.notes.data
 
-import android.content.Context
 import com.gorokhov.notes.domain.Note
 import com.gorokhov.notes.domain.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RoomNotesRepositoryImpl private constructor(
-    context: Context
+class RoomNotesRepositoryImpl @Inject constructor(
+    private val noteDao: NoteDao
 ) : NotesRepository {
-
-    private val noteDatabase = AppDatabase.getInstance(context)
-    private val noteDao = noteDatabase.noteDao()
 
     override suspend fun addNote(
         title: String,
@@ -54,25 +51,5 @@ class RoomNotesRepositoryImpl private constructor(
 
     override suspend fun switchPinnedStatus(noteId: Int) {
         noteDao.togglePin(noteId)
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: RoomNotesRepositoryImpl? = null
-
-        fun getInstance(context: Context): RoomNotesRepositoryImpl {
-            // Первая проверка (без блокировки)
-            INSTANCE?.let { return it }
-
-            // Синхронизация только при необходимости
-            synchronized(this) {
-                // Вторая проверка (double-check)
-                INSTANCE?.let { return it }
-
-                return RoomNotesRepositoryImpl(context).also {
-                    INSTANCE = it
-                }
-            }
-        }
     }
 }

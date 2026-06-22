@@ -16,7 +16,9 @@ import com.gorokhov.notes.presentation.screens.creation.CreateNotesScreen
 import com.gorokhov.notes.presentation.screens.editing.EditNotesScreen
 import com.gorokhov.notes.presentation.screens.notes.NotesScreen
 import com.gorokhov.notes.presentation.ui.theme.NotesTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,8 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.gorokhov.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,10 +38,11 @@ import com.gorokhov.notes.presentation.utils.DateFormatter
 fun EditNotesScreen(
     modifier: Modifier = Modifier,
     noteId: Int,
-    context: Context = LocalContext.current.applicationContext,
-    viewModel: EditNoteViewModel = viewModel {
-        EditNoteViewModel(noteId = noteId, context = context)
-    },
+    viewModel: EditNoteViewModel = hiltViewModel(
+        creationCallback = { factory: EditNoteViewModel.Factory ->
+            factory.create(noteId)
+        }
+    ),
     onFinished: () -> Unit
 ) {
 
@@ -122,7 +121,7 @@ fun EditNotesScreen(
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                                )
+                            )
                         }
                     )
 
@@ -183,12 +182,13 @@ fun EditNotesScreen(
                 }
             }
         }
+
         EditNoteState.Finished -> {
             LaunchedEffect(key1 = Unit) {
                 onFinished()
             }
         }
 
-        EditNoteState.Initial -> {  }
+        EditNoteState.Initial -> {}
     }
 }

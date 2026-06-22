@@ -29,18 +29,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gorokhov.notes.presentation.screens.editing.EditNoteViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.gorokhov.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateNotesScreen(
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current.applicationContext,
-    viewModel: CreateNoteViewModel = viewModel {
-        CreateNoteViewModel(context = context)
-    },
+    viewModel: CreateNoteViewModel = hiltViewModel(),
     onFinished: () -> Unit
 ) {
 
